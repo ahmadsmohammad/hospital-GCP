@@ -1,0 +1,9 @@
+<h2>Edit {{ table }} Record</h2>
+<form method="POST">
+  {% for key, value in row.items() %}
+    <label>{{ key }}:</label><br>
+    <input type="text" name="{{ key }}" value="{{ value }}"><br><br>
+  {% endfor %}
+  <button type="submit">Save Changes</button>
+</form>
+<a href="/dashboard">Cancel</a>

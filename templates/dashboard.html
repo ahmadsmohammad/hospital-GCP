@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head><title>Admin Dashboard</title></head>
+<body>
+  <h2>HospitalDB - Tables</h2>
+  <a href="/logout">Logout</a>
+  {% for name, data in tables.items() %}
+  <h3>{{ name }}</h3>
+
+  {% if data.rows %}
+    <table border="1">
+      <tr>
+        {% for col in data.rows[0].keys() %}
+          <th>{{ col }}</th>
+        {% endfor %}
+        {% if 'W' in data.permissions or 'D' in data.permissions %}
+          <th>Actions</th>
+        {% endif %}
+      </tr>
+      {% for row in data.rows %}
+        <tr>
+          {% for cell in row.values() %}
+            <td>{{ cell }}</td>
+          {% endfor %}
+          {% if 'W' in data.permissions or 'D' in data.permissions %}
+          <td>
+            {% if 'W' in data.permissions %}
+              <form action="/edit/{{ name }}/{{ row[name[:-1].lower() + '_id'] }}" method="get" style="display:inline;">
+                <button type="submit">Edit</button>
+              </form>
+            {% endif %}
+            {% if 'D' in data.permissions %}
+              <form action="/delete/{{ name }}/{{ row[name[:-1].lower() + '_id'] }}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+              </form>
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p><i>No data available in this table.</i></p>
+  {% endif %}
+{% endfor %}
+
+
+</body>
+</html>
